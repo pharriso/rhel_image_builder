@@ -1,0 +1,20 @@
+name = "rhel9-vm"
+description = ""
+version = "0.0.1"
+packages = []
+modules = []
+groups = []
+distro = "rhel-9"
+
+[customizations]
+[[customizations.user]]
+name = "root"
+password = ""
+key = ""
+[customizations.timezone]
+timezone = "Europe/London"
+[customizations.locale]
+[customizations.firewall]
+[customizations.firewall.services]
+[customizations.services]
+

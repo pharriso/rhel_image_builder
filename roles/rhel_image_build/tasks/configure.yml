@@ -1,0 +1,21 @@
+- name: create a directory for blueprints
+  ansible.builtin.file:
+    path: /root/image_builder_blueprints
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: copy across blueprint files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /root/image_builder_blueprints
+  loop:
+    - rhel9_blueprint.toml
+
+- name: add blueprints to image-builder
+  ansible.builtin.command:
+    cmd: composer-cli blueprints push /root/image_builder_blueprints/{{ item }}
+  loop:
+    - rhel9_blueprint.toml
+

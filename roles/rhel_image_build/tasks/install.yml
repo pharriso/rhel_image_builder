@@ -1,0 +1,35 @@
+---
+
+- name: install image builder packages and httpd
+  ansible.builtin.dnf:
+    name:
+      - osbuild-composer
+      - composer-cli
+      - cockpit-composer
+      - httpd
+
+- name: start and enable osbuild-composer.socket
+  ansible.builtin.service:
+    name: osbuild-composer.socket
+    state: started
+    enabled: true
+
+- name: start and enable cockpit.socket
+  ansible.builtin.service:
+    name: cockpit.socket
+    state: started
+    enabled: true
+
+- name: start and enable httpd
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: true
+
+- name: create directory for templates
+  ansible.builtin.file:
+    state: directory
+    path: /var/www/html/templates
+    owner: root
+    group: root
+    mode: 0755

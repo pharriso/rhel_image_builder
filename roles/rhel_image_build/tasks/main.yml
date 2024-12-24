@@ -1,0 +1,13 @@
+---
+
+- name: include install tasks
+  include_tasks: install.yml
+
+- name: include configure tasks
+  include_tasks: configure.yml
+
+- name: include build tasks
+  include_tasks: build.yml
+  loop:
+    - rhel9
+

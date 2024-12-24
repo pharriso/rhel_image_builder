@@ -1,0 +1,30 @@
+---
+
+- name: build {{ item }} image
+  ansible.builtin.command:
+    cmd: composer-cli compose start {{ item }}-vm qcow2 --size 8192
+  register: image_build
+
+- name: set build uuid fact
+  set_fact:
+    build_uuid: "{{ image_build.stdout_lines[0].split()[1] }}"
+
+- name: wait for build to complete
+  ansible.builtin.command: 
+    cmd: composer-cli compose info {{ build_uuid }}
+  register: build_status
+  failed_when: "'FAILED' in build_status.stdout"
+  until: "'FINISHED' in build_status.stdout"
+  retries: 30
+  delay: 30
+
+- name: download image from image-builder
+  ansible.builtin.command:
+    cmd: composer-cli compose image {{ build_uuid }} --filename /var/www/html/templates/{{ item }}.qcow2
+
+- name: set permissions on images
+  ansible.builtin.file:
+    path: /var/www/html/templates/{{ item }}.qcow2
+    owner: root
+    group: root
+    mode: 0644
