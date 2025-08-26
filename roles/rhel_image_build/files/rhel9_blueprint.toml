@@ -1,7 +1,9 @@
 name = "rhel9-vm"
 description = ""
 version = "0.0.1"
-packages = []
+[[packages]]
+name = "podman"
+version = "*"
 modules = []
 groups = []
 distro = "rhel-9"
